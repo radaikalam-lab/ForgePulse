@@ -7,20 +7,20 @@ ForgePulse is an independent Flash Joule Heating (FJH) experimental platform. It
 ## System Layers
 
 ```text
-                         Cognitia
-                    Cognitive Substrate
-                            │
-                       FJH Adapter
-                            │
-                            ▼
-                     ┌──────────────┐
-                     │  ForgePulse  │
-                     │ FJH Platform │
-                     └───────┬──────┘
-                             │
-             ┌───────────────┼────────────────┐
-             ▼               ▼                ▼
-         Simulator       Instruments       Hardware
+                           Cognitia
+                      Cognitive Substrate
+                              │
+                         FJH Adapter
+                              │
+                              ▼
+                       ┌──────────────┐
+                       │  ForgePulse  │
+                       │ FJH Platform │
+                       └───────┬──────┘
+                               │
+               ┌───────────────┼────────────────┐
+               ▼               ▼                ▼
+           Simulator       Edge Boundary     Hardware
 ```
 
 ## Layer Responsibilities
@@ -29,10 +29,13 @@ ForgePulse is an independent Flash Joule Heating (FJH) experimental platform. It
 Owns FJH experiment semantics: experiments, pulse sequences, feedstock, atmosphere, process constraints, material states, and provenance. No hardware, network, or database dependencies.
 
 ### Validation Layer
-Validates experiment specifications deterministically. Does not execute experiments. Does not grant execution authority.
+Deterministically validates experiment specifications. Does not execute experiments. Does not grant execution authority. Does not claim physical safety, scientific validity, experimental success, material quality, causal validity, or epistemic acceptance.
+
+### Snapshot Layer
+Creates immutable validated experiment snapshots. Snapshots are deeply immutable and independent of the source experiment object. Snapshots use deterministic serialization and SHA-256 checksums.
 
 ### Execution Layer
-Represents execution state and target/actual process parameters. Execution authority belongs to the FJH controller, not ForgePulse core.
+Represents execution state and target/actual process parameters. Execution authority belongs to the FJH controller, not ForgePulse core. Every execution references an immutable `ValidatedExperimentSnapshot`.
 
 ### Measurement Layer
 Represents raw, derived, and interpreted measurements. Preserves lineage and explicit source typing.
@@ -42,6 +45,9 @@ Represents material results and states. Does not invent unmeasured properties.
 
 ### Provenance Layer
 Maintains structured lineage for all derived artifacts.
+
+### Edge Integration Boundary
+Manages the authority boundary between ForgePulse domain and external systems (including optional Cognitia integration). Enforces state-dependent access controls. Does not execute hardware commands.
 
 ### Cognitia Adapter Layer
 Optional translation boundary between ForgePulse and Cognitia. Never executes, never bypasses safety, never claims scientific truth.
@@ -54,6 +60,12 @@ Produces synthetic observations explicitly marked as simulated. Cannot masquerad
 ```text
 Scientific/domain authority
         ForgePulse
+            │
+            ▼
+    Edge Integration Boundary
+            │
+            ▼
+    External Systems (optional)
             │
             ▼
 Execution authority
@@ -74,17 +86,21 @@ Cognitia is advisory only.
 ```text
 Research Intent
     → Experiment Proposal
-    → Validated Experiment Snapshot
-    → Execution (Simulator or Hardware)
+    → Experiment Specification
+    → Validation
+    → Validated Snapshot
+    → Queued Execution
+    → Running Execution
+    → Completed/Failed/Aborted
     → Raw Measurements
     → Derived Measurements
-    → Material Results
+    → Characterization
     → Interpretation
 ```
 
 ## Immutability Semantics
 
-Experiment specifications and validated snapshots are immutable once committed. Execution lifecycle state may transition according to the execution contract. Historical execution states must not be silently rewritten.
+Experiment specifications and validated snapshots are immutable once committed. Execution lifecycle state may transition according to the experiment contract. Historical execution states must not be silently rewritten.
 
 ```text
 Experiment Specification
@@ -95,12 +111,12 @@ Validated Experiment Snapshot
         ↓
 Immutable
 
-Execution
+Experiment
         ↓
 Lifecycle State
-QUEUED → RUNNING → COMPLETED/FAILED/ABORTED
+RESEARCH_INTENT → PROPOSED → SPECIFIED → VALIDATED → SNAPSHOTTED → QUEUED → RUNNING → COMPLETED/FAILED/ABORTED → MEASURED → DERIVED → CHARACTERIZED → INTERPRETED
 
-Execution History
+Experiment History
         ↓
 Auditable
 ```

@@ -20,6 +20,7 @@ from forgepulse.experiment import (
     PulseSequence,
     ProcessConstraint,
 )
+from forgepulse.validation.snapshot import SnapshotValidator
 
 
 @dataclass(frozen=True)

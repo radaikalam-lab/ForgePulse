@@ -15,6 +15,7 @@ class SourceType(StrEnum):
     DERIVED = "derived"
     INTERPRETED = "interpreted"
     SIMULATED = "simulated"
+    MEASURED = "measured"
 
 
 @dataclass(frozen=True)

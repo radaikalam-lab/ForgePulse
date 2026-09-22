@@ -8,8 +8,17 @@ import pytest
 
 from forgepulse.common import Quantity
 from forgepulse.execution import ActualProcess, Execution, ExecutionStatus, TargetProcess
-from forgepulse.experiment import ExperimentSpecification, ExperimentObjective, Feedstock, Pulse, PulseSequence, ProcessConstraint, Atmosphere, Chamber
-from forgepulse.experiment import ExperimentObjective
+from forgepulse.experiment import (
+    Atmosphere,
+    Chamber,
+    ExperimentObjective,
+    ExperimentSpecification,
+    Feedstock,
+    Pulse,
+    PulseSequence,
+    ProcessConstraint,
+)
+from forgepulse.validation import SnapshotValidator
 
 
 def _make_spec() -> ExperimentSpecification:
@@ -29,14 +38,20 @@ def _make_spec() -> ExperimentSpecification:
     )
 
 
+def _make_snapshot() -> "ValidatedExperimentSnapshot":
+    spec = _make_spec()
+    validator = SnapshotValidator()
+    return validator.create_snapshot(spec)
+
+
 class TestTargetVsActual:
     def test_target_and_actual_are_distinct(self):
-        spec = _make_spec()
+        snapshot = _make_snapshot()
         target = TargetProcess(voltage=Quantity(value=120.0, unit="V"))
         actual = ActualProcess(measured_voltage=Quantity(value=118.7, unit="V"))
         execution = Execution(
             execution_id="exec-001",
-            snapshot=spec,
+            snapshot=snapshot,
             target_process=target,
             actual_process=actual,
         )
@@ -44,12 +59,12 @@ class TestTargetVsActual:
         assert execution.actual_process.measured_voltage.value == 118.7
 
     def test_target_not_overwritten_by_actual(self):
-        spec = _make_spec()
+        snapshot = _make_snapshot()
         target = TargetProcess(voltage=Quantity(value=120.0, unit="V"))
         actual = ActualProcess(measured_voltage=Quantity(value=100.0, unit="V"))
         execution = Execution(
             execution_id="exec-002",
-            snapshot=spec,
+            snapshot=snapshot,
             target_process=target,
             actual_process=actual,
         )
@@ -59,11 +74,11 @@ class TestTargetVsActual:
 
 class TestExecutionStatus:
     def test_default_status_is_queued(self):
-        spec = _make_spec()
-        execution = Execution(execution_id="exec-003", snapshot=spec)
+        snapshot = _make_snapshot()
+        execution = Execution(execution_id="exec-003", snapshot=snapshot)
         assert execution.status == ExecutionStatus.QUEUED
 
     def test_status_transitions(self):
-        spec = _make_spec()
-        execution = Execution(execution_id="exec-004", snapshot=spec, status=ExecutionStatus.COMPLETED)
+        snapshot = _make_snapshot()
+        execution = Execution(execution_id="exec-004", snapshot=snapshot, status=ExecutionStatus.COMPLETED)
         assert execution.status == ExecutionStatus.COMPLETED

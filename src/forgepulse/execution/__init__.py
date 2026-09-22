@@ -8,7 +8,7 @@ from enum import StrEnum
 from typing import Optional
 
 from forgepulse.common import Quantity
-from forgepulse.experiment import ExperimentSpecification
+from forgepulse.experiment import ExperimentSpecification, ValidatedExperimentSnapshot
 
 
 class ExecutionStatus(StrEnum):
@@ -38,7 +38,7 @@ class ActualProcess:
 @dataclass(frozen=True)
 class Execution:
     execution_id: str
-    snapshot: ExperimentSpecification
+    snapshot: ValidatedExperimentSnapshot
     status: ExecutionStatus = ExecutionStatus.QUEUED
     target_process: TargetProcess = field(default_factory=TargetProcess)
     actual_process: ActualProcess = field(default_factory=ActualProcess)

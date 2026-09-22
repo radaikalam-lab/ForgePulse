@@ -114,6 +114,7 @@ class TestValidatedSnapshot:
         spec = _make_base_spec()
         result = validate_experiment(spec)
         snapshot = ValidatedExperimentSnapshot(
+            snapshot_id=f"snap-{spec.experiment_id}-{spec.experiment_version}",
             experiment_id=spec.experiment_id,
             experiment_version=spec.experiment_version,
             schema_version=spec.schema_version,
@@ -130,6 +131,7 @@ class TestValidatedSnapshot:
         spec = _make_base_spec()
         result = validate_experiment(spec)
         snapshot = ValidatedExperimentSnapshot(
+            snapshot_id=f"snap-{spec.experiment_id}-{spec.experiment_version}",
             experiment_id=spec.experiment_id,
             experiment_version=spec.experiment_version,
             schema_version=spec.schema_version,

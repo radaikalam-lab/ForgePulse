@@ -50,12 +50,9 @@ created_at: datetime (UTC, ISO 8601)
 The `ValidatedExperimentSnapshot` includes a `checksum` field.
 
 Current implementation:
-- The checksum is stored as an explicit string field on the snapshot.
-- The canonical checksum algorithm and its exact canonicalization rules are not yet frozen.
-
-Future canonical contract:
-- The checksum algorithm and canonicalization rules will be formally frozen as part of the Phase 2 Validation and Snapshot contract.
-- Until then, checksum values are application-defined and must be treated as opaque strings.
+- The checksum is computed as the first 16 hex characters of SHA-256 over the canonical JSON representation of the frozen experiment specification.
+- Canonical JSON uses UTF-8 encoding, sorted object keys, compact separators, explicit units, UTC timestamps in ISO 8601 format with `Z` suffix, no NaN or Infinity values, and stable enum representation.
+- The checksum is deterministic: identical semantic content produces identical checksums, and meaningful changes produce different checksums.
 
 ## Serialization
 
@@ -73,6 +70,7 @@ Future canonical contract:
 - Constraint validation: all `ProcessConstraint` instances satisfied.
 - Validation is deterministic given the same input.
 - Validation does not execute anything.
+- Validation does not claim physical safety, scientific validity, experimental success, material quality, causal validity, or epistemic acceptance.
 
 ## Failure Semantics
 

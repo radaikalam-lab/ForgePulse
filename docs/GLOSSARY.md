@@ -26,11 +26,13 @@
 
 ## E
 
+**EdgeIntegrationBoundary**: Manages the authority boundary between ForgePulse domain and external systems. Enforces state-dependent access controls.
+
 **ElectricalObservation**: An electrical domain measurement (voltage, current, resistance, etc.).
 
 **Evidence**: A scientific evidence structure, potentially translated for Cognitia.
 
-**Experiment**: A complete, versioned scientific procedure definition.
+**Experiment**: A complete, versioned scientific procedure definition with lifecycle state.
 
 **ExperimentObjective**: The scientific goal of an experiment.
 
@@ -60,9 +62,13 @@
 
 **InvalidPulseSequence**: Raised when a pulse sequence violates domain rules.
 
+**InvalidTransition**: Raised when an invalid experiment lifecycle transition is attempted.
+
 **InterpretedResult**: A scientific interpretation of measurements, explicitly marked as interpretation. Never promoted to measurement.
 
 ## L
+
+**LifecycleEvent**: A record of a state transition in the experiment lifecycle.
 
 **LineageReference**: A reference to another artifact by its stable identifier.
 
@@ -77,6 +83,8 @@
 **MeasurementRequirement**: What must be measured during execution.
 
 **MeasurementSeries**: A structured time-series or vector measurement.
+
+**MeasurementTranslator**: Translates raw edge data into normalized ForgePulse measurements.
 
 **MeasurementValidationError**: Raised when a measurement fails structural or semantic validation.
 
@@ -110,7 +118,19 @@
 
 **SimulatedObservation**: An observation produced by the simulator, explicitly marked as simulated.
 
+**SimulationMetadata**: Metadata identifying the simulator implementation, model version, seed, sampling rate, and documented assumptions.
+
+**Simulator**: A deterministic program that produces synthetic FJH observations from a validated experiment snapshot.
+
+**SimulatorResult**: The complete output of a simulation run, including measurements, observations, metadata, and provenance.
+
 **SnapshotViolation**: An attempt to mutate an immutable snapshot.
+
+**SnapshotValidator**: Creates immutable validated experiment snapshots from experiment specifications. Validates first, then snapshots only valid specifications.
+
+**SourceType**: Enumeration distinguishing raw, derived, interpreted, simulated, and measured data.
+
+**SyntheticEdgeSource**: Generates deterministic synthetic measurement data for testing and simulation.
 
 ## T
 
