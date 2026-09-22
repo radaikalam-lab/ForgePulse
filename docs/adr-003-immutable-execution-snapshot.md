@@ -10,7 +10,15 @@ An experiment specification must not silently change between validation and exec
 
 ## Decision
 
-Every execution references a `ValidatedExperimentSnapshot`. Once an experiment reaches execution, its validated specification is immutable. The snapshot contains a deterministic checksum.
+Every execution references a `ValidatedExperimentSnapshot`. Once an experiment reaches execution, its validated specification is immutable. The snapshot includes a `checksum` field.
+
+Current implementation:
+- The checksum is stored as an explicit string field.
+- The canonical checksum algorithm and canonicalization rules are not yet frozen.
+
+Future canonical contract:
+- The checksum algorithm and canonicalization rules will be formally frozen as part of the Phase 2 Validation and Snapshot contract.
+- Until then, checksum values are application-defined and must be treated as opaque strings.
 
 ## Consequences
 

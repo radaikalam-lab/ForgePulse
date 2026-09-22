@@ -45,6 +45,18 @@ created_at: datetime (UTC, ISO 8601)
 - `schema_version` identifies the contract version of the specification structure.
 - Versions are compared lexicographically by default unless a richer versioning scheme is defined.
 
+## Snapshot Checksum
+
+The `ValidatedExperimentSnapshot` includes a `checksum` field.
+
+Current implementation:
+- The checksum is stored as an explicit string field on the snapshot.
+- The canonical checksum algorithm and its exact canonicalization rules are not yet frozen.
+
+Future canonical contract:
+- The checksum algorithm and canonicalization rules will be formally frozen as part of the Phase 2 Validation and Snapshot contract.
+- Until then, checksum values are application-defined and must be treated as opaque strings.
+
 ## Serialization
 
 - UTF-8 JSON

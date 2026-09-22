@@ -82,4 +82,25 @@ Research Intent
     → Interpretation
 ```
 
-Each stage is explicit and immutable once created.
+## Immutability Semantics
+
+Experiment specifications and validated snapshots are immutable once committed. Execution lifecycle state may transition according to the execution contract. Historical execution states must not be silently rewritten.
+
+```text
+Experiment Specification
+        ↓
+Immutable Version
+
+Validated Experiment Snapshot
+        ↓
+Immutable
+
+Execution
+        ↓
+Lifecycle State
+QUEUED → RUNNING → COMPLETED/FAILED/ABORTED
+
+Execution History
+        ↓
+Auditable
+```
