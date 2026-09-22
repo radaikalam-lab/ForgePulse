@@ -38,12 +38,14 @@ measurement_id: str
 quantity: str
 values: list[float] | list[list[float]]
 unit: str
-sampling_rate: Quantity
+sampling_rate: Quantity | null
 start_time: datetime (UTC)
 timestamps: list[datetime] | null
 instrument_reference: str | null
 provenance: ProvenanceReference
 ```
+
+`sampling_rate` is optional when explicit `timestamps` are provided.
 
 ## Serialization
 

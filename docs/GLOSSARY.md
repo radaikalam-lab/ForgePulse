@@ -8,15 +8,19 @@
 
 **Advisory**: A response from Cognitia to a ForgePulse request.
 
-## C
+**Assumption**: An explicit premise of an interpretation or evidence item.
 
-**Cognitia**: An external cognitive infrastructure dependency. Advisory only; has no execution or safety authority over ForgePulse.
+## C
 
 **Chamber**: The reaction vessel configuration for an experiment.
 
 **CharacterizationResult**: Structured post-experiment characterization data.
 
 **CharacterizationRequirement**: A requirement for post-process material characterization.
+
+**Cognitia**: An external cognitive infrastructure dependency. Advisory only; has no execution or safety authority over ForgePulse.
+
+**CompetingInterpretation**: Alternative explanation retained explicitly when evidence does not distinguish between interpretations.
 
 **ConstraintViolation**: A process constraint violated by an experiment specification.
 
@@ -30,7 +34,9 @@
 
 **ElectricalObservation**: An electrical domain measurement (voltage, current, resistance, etc.).
 
-**Evidence**: A scientific evidence structure, potentially translated for Cognitia.
+**ElectricalCharacterization**: Structured electrical characterization derived from measurements (peak voltage, peak current, average power, pulse energy).
+
+**Evidence**: Information supporting or constraining an interpretation.
 
 **Experiment**: A complete, versioned scientific procedure definition with lifecycle state.
 
@@ -54,6 +60,8 @@
 
 ## H
 
+**Hypothesis**: Candidate scientific explanation.
+
 **HypothesisReference**: A reference to a hypothesis under evaluation.
 
 ## I
@@ -63,6 +71,12 @@
 **InvalidPulseSequence**: Raised when a pulse sequence violates domain rules.
 
 **InvalidTransition**: Raised when an invalid experiment lifecycle transition is attempted.
+
+**Interpretation**: Explicit inference derived from available evidence. Distinct from measurement, characterization, and material truth.
+
+**InterpretationResult**: Structured scientific interpretation.
+
+**InterpretationStatus**: Lifecycle state of an interpretation (`PROPOSED`, `UNDER_REVIEW`, `SUPPORTED`, `REFUTED`, `UNRESOLVED`, `SUPERSEDED`).
 
 **InterpretedResult**: A scientific interpretation of measurements, explicitly marked as interpretation. Never promoted to measurement.
 
@@ -74,6 +88,8 @@
 
 ## M
 
+**MaterialEvolution**: Candidate material state proposed from interpretation. Does not silently become canonical truth.
+
 **MaterialResult**: The experimental output material, including yield and characterization.
 
 **MaterialState**: The condition of a material at a point in time. Unknown values remain unknown.
@@ -82,7 +98,11 @@
 
 **MeasurementRequirement**: What must be measured during execution.
 
-**MeasurementSeries**: A structured time-series or vector measurement.
+**MeasurementIngestionBoundary**: Provider-neutral interface for ingesting normalized measurement representations into ForgePulse. Does not control instruments.
+
+**MeasurementPipeline**: Stages for processing measurements from raw through derived to characterization.
+
+**MeasurementSeries**: A structured time-series or vector measurement. `sampling_rate` is optional when explicit `timestamps` are provided.
 
 **MeasurementTranslator**: Translates raw edge data into normalized ForgePulse measurements.
 
@@ -102,6 +122,8 @@
 
 **PulseObservation**: A combined pulse-domain observation.
 
+**PulseStatistics**: Deterministic pulse-level statistics derived from voltage and current series.
+
 **PulseSequence**: An ordered set of pulses.
 
 ## Q
@@ -111,6 +133,8 @@
 ## R
 
 **RawMeasurement**: An observation directly acquired from an instrument or simulator. Never replaced by derived values.
+
+**Residual**: Observed information not adequately explained by the current interpretation. Not error, not failure, not noise unless explicitly established.
 
 ## S
 
@@ -138,7 +162,13 @@
 
 **ThermalObservation**: A thermal domain measurement (temperature, heat flux, etc.).
 
+**ThermalCharacterization**: Structured thermal characterization derived from temperature measurements (peak temperature, temperature rise, heating/cooling rates).
+
 ## U
+
+**Uncertainty**: Measurement uncertainty representation, distinct from epistemic confidence.
+
+**Unknown**: Information not established by available evidence. First-class; not represented as null, 0, false, or low confidence.
 
 **UnsupportedOperation**: Raised when an operation is not supported in the current context.
 

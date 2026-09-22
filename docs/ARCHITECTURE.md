@@ -49,6 +49,9 @@ Maintains structured lineage for all derived artifacts.
 ### Edge Integration Boundary
 Manages the authority boundary between ForgePulse domain and external systems (including optional Cognitia integration). Enforces state-dependent access controls. Does not execute hardware commands.
 
+### Interpretation Layer
+Structured scientific interpretation above characterization. Does not claim scientific truth. Does not grant execution authority. Assumptions are explicit. Residuals and unknowns are first-class.
+
 ### Cognitia Adapter Layer
 Optional translation boundary between ForgePulse and Cognitia. Never executes, never bypasses safety, never claims scientific truth.
 
@@ -96,6 +99,7 @@ Research Intent
     → Derived Measurements
     → Characterization
     → Interpretation
+    → Material Evolution Candidate
 ```
 
 ## Immutability Semantics
@@ -112,9 +116,12 @@ Validated Experiment Snapshot
 Immutable
 
 Experiment
-        ↓
+         ↓
 Lifecycle State
 RESEARCH_INTENT → PROPOSED → SPECIFIED → VALIDATED → SNAPSHOTTED → QUEUED → RUNNING → COMPLETED/FAILED/ABORTED → MEASURED → DERIVED → CHARACTERIZED → INTERPRETED
+
+Interpretation Status
+PROPOSED → UNDER_REVIEW → SUPPORTED/REFUTED/UNRESOLVED/SUPERSEDED
 
 Experiment History
         ↓
